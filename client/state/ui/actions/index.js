@@ -9,8 +9,6 @@ import {
 	HISTORY_REPLACE,
 } from 'state/action-types';
 
-import 'state/data-layer/wpcom/sites/jitm';
-
 /**
  * Re-exports
  */
