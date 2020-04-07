@@ -25,7 +25,12 @@ const name = 'a8c/task';
 
 const edit = ( { attributes, setAttributes, mergeBlocks, onReplace, className } ) => {
 	const { assignedTo, content, placeholder, status, dueDate, startDate } = attributes;
-	const todoClass = classnames( 'wp-block-todo', className, { 'is-checked': status === 'done' } );
+	const todoClass = classnames( 'wp-block-todo', className, {
+		'is-checked': status === 'done',
+		'is-new': 'new' === status,
+		'is-in-progress': 'in-progress' === status,
+		'is-done': 'done' === status,
+	} );
 
 	const options = [
 		{
@@ -137,18 +142,34 @@ const edit = ( { attributes, setAttributes, mergeBlocks, onReplace, className } 
 				</PanelBody>
 			</InspectorControls>
 			<div className={ todoClass }>
-				{ ( status === 'done' || status === 'new' ) && (
+				{ status === 'new' && (
 					<Button
 						className="wp-block-todo__status"
 						onClick={ () => setAttributes( { status: 'in-progress' } ) }
-					/>
+					>
+						<span role="img" aria-label="new task">
+							⭕️
+						</span>
+					</Button>
 				) }
 				{ status === 'in-progress' && (
 					<Button
-						className="wp-block-todo__is-in-progress"
+						className="wp-block-todo__status"
 						onClick={ () => setAttributes( { status: 'done' } ) }
 					>
-						In Progress
+						<span role="img" aria-label="new task">
+							🔄
+						</span>
+					</Button>
+				) }
+				{ status === 'done' && (
+					<Button
+						className="wp-block-todo__status"
+						onClick={ () => setAttributes( { status: 'new' } ) }
+					>
+						<span role="img" aria-label="new task">
+							✅
+						</span>
 					</Button>
 				) }
 				<RichText
@@ -157,18 +178,18 @@ const edit = ( { attributes, setAttributes, mergeBlocks, onReplace, className } 
 					value={ content }
 					onChange={ value => setAttributes( { content: value } ) }
 					onMerge={ mergeBlocks }
-					onSplit={ value => {
+					onSplit={ htmlAfterSplit => {
 						if ( ! content.length ) {
 							return createBlock( 'core/paragraph' );
 						}
 
-						if ( ! value ) {
+						if ( ! htmlAfterSplit ) {
 							return createBlock( name );
 						}
 
 						return createBlock( name, {
 							...attributes,
-							content: value,
+							content: htmlAfterSplit,
 						} );
 					} }
 					onReplace={ onReplace }

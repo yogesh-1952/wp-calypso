@@ -8,8 +8,38 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import edit from './editor';
-import save from './save';
+import defaultSave, { save } from './save';
 import icon from './icon';
+
+const attributes = {
+	content: {
+		type: 'string',
+		source: 'html',
+		selector: 'p',
+		default: '',
+	},
+	checked: {
+		type: 'boolean',
+	},
+	assignedTo: {
+		type: 'string',
+	},
+	placeholder: {
+		type: 'string',
+	},
+	status: {
+		type: 'string',
+		default: 'new',
+	},
+	dueDate: {
+		type: 'string',
+		default: '',
+	},
+	startDate: {
+		type: 'string',
+		default: '',
+	},
+};
 
 export function registerBlock() {
 	registerBlockType( 'a8c/task', {
@@ -22,37 +52,24 @@ export function registerBlock() {
 			className: false,
 			anchor: true,
 		},
-		attributes: {
-			content: {
-				type: 'array',
-				source: 'children',
-				selector: 'p',
+		attributes,
+		deprecated: [
+			{
+				attributes: {
+					...attributes,
+					content: {
+						type: 'string',
+						source: 'html',
+						selector: 'p',
+						default: '',
+					},
+				},
+				migrate: a => a,
+				save: save( 'p' ),
 			},
-			checked: {
-				type: 'boolean',
-			},
-			assignedTo: {
-				type: 'string',
-			},
-			placeholder: {
-				type: 'string',
-			},
-			status: {
-				type: 'string',
-				default: 'new',
-			},
-			dueDate: {
-				type: 'string',
-				default: '',
-			},
-			startDate: {
-				type: 'string',
-				default: '',
-			},
-		},
-
+		],
 		edit,
-		save,
+		save: defaultSave,
 	} );
 }
 

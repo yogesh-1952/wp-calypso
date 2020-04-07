@@ -12,15 +12,17 @@ import { withSelect } from '@wordpress/data';
 
 import './editor.scss';
 
-const edit = ( {
-	attributes,
-	allTasks,
-	pendingTasks,
-	completedTasks,
-	unassignedTasks,
-	setAttributes,
-} ) => {
-	const { estimate, team } = attributes;
+const edit = args => {
+	const { attributes, setAttributes } = args;
+	const { estimate, team, allTasks, pendingTasks, completedTasks } = attributes;
+
+	[ 'allTasks', 'pendingTasks', 'completedTasks' ].forEach( task => {
+		if ( attributes[ task ] !== args[ `${ task }Live` ] ) {
+			setAttributes( {
+				[ task ]: args[ `${ task }Live` ],
+			} );
+		}
+	} );
 
 	const estimates = [
 		{
@@ -41,6 +43,8 @@ const edit = ( {
 		},
 	];
 
+	const completedPercentage = Math.round( ( completedTasks * 100 ) / allTasks );
+
 	return (
 		<>
 			<InspectorControls>
@@ -58,33 +62,55 @@ const edit = ( {
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<div className="wp-block-project-status__header">
-				<span className="wp-block-project-status__title">Project Overview</span>
+			<section className="wp-block-project-status__header">
+				<h1 className="wp-block-project-status__title">Project Overview</h1>
 				<div className="wp-block-project-status__counts">
-					<span className="wp-block-project-status__total">{ allTasks } Tasks</span>
+					<strong className="wp-block-project-status__total">{ allTasks } Tasks</strong>
+					{ '\u2003' }
 					<span>
-						{ completedTasks } Completed ({ ( completedTasks * 100 ) / allTasks }%)
+						{ completedTasks } Completed ({ completedPercentage }%)
 					</span>
-					<span>{ pendingTasks + unassignedTasks } Pending</span>
+					{ '\u2003' }
+					<span>{ pendingTasks } In progress</span>
 				</div>
-			</div>
+			</section>
 			<div className="wp-block-project-status__bar">
+				<span className="if-missing-style">Completed Tasks</span>
 				<span
 					style={ {
 						display: 'block',
-						width: ( completedTasks * 730 ) / allTasks,
+						width: `${ Math.round( ( completedTasks * 730 ) / allTasks ) }px`,
 						background: '#22DE84',
 						height: '18px',
 					} }
-				></span>
+				/>
+				<span
+					className="if-missing-style"
+					style={ {
+						display: 'block',
+						width: `${ Math.round( 730 * ( 1 - pendingTasks / allTasks ) ) }px`,
+						background: '#207c3e',
+						height: '3px',
+					} }
+				/>
+				<span className="if-missing-style">In-progress Tasks</span>
 				<span
 					style={ {
 						display: 'block',
-						width: ( pendingTasks * 730 ) / allTasks,
+						width: `${ Math.round( ( pendingTasks * 730 ) / allTasks ) }px`,
 						background: '#D6F3E3',
 						height: '18px',
 					} }
-				></span>
+				/>
+				<span
+					className="if-missing-style"
+					style={ {
+						display: 'block',
+						width: `${ Math.round( 730 * ( 1 - completedTasks / allTasks ) ) }px`,
+						background: '#8aa192',
+						height: '3px',
+					} }
+				/>
 			</div>
 			{ ( estimate || team ) && (
 				<div className="wp-block-project-status__footer">
@@ -108,9 +134,8 @@ export default withSelect( select => {
 		} );
 
 	return {
-		allTasks: tasks.length,
-		completedTasks: tasks.filter( task => task.attributes.status === 'done' ).length,
-		pendingTasks: tasks.filter( task => task.attributes.status === 'in-progress' ).length,
-		unassignedTasks: tasks.filter( task => task.attributes.status === 'new' ).length,
+		allTasksLive: tasks.length,
+		completedTasksLive: tasks.filter( task => task.attributes.status === 'done' ).length,
+		pendingTasksLive: tasks.filter( task => task.attributes.status === 'in-progress' ).length,
 	};
 } )( edit );

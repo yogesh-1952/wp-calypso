@@ -29,6 +29,18 @@ export function registerBlock() {
 				type: 'string',
 				default: '',
 			},
+			allTasks: {
+				type: 'number',
+				default: 0,
+			},
+			pendingTasks: {
+				type: 'number',
+				default: 0,
+			},
+			completedTasks: {
+				type: 'number',
+				default: 0,
+			},
 		},
 		edit,
 		save,
