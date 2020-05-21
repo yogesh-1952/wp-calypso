@@ -169,7 +169,9 @@ function downloadLanguagesRevions() {
 			} );
 			response.on( 'end', () => {
 				if ( response.statusCode !== 200 ) {
-					log( 'failed' );
+					console.error( 'Failed to download language revisions file.' );
+					process.exit( 1 );
+
 					resolve( false );
 					return;
 				}
@@ -210,7 +212,10 @@ async function downloadLanguages() {
 						files.forEach( ( file ) => response.pipe( file ) );
 						response.on( 'data', ( chunk ) => ( body += chunk ) );
 						response.on( 'end', () => {
-							if ( response.statusCode === 200 ) {
+							if ( response.statusCode !== 200 ) {
+								console.error( `Failed to download translations for "${ langSlug }".` );
+								process.exit( 1 );
+							} else {
 								downloadedLanguagesCount++;
 								log();
 							}
