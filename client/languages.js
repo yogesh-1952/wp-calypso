@@ -1,4 +1,4 @@
-export const languages = [
+const languages = [
 	{
 		value: 2,
 		langSlug: 'af',
@@ -850,3 +850,6 @@ export const languages = [
 		territories: [ '030' ],
 	},
 ];
+
+// Using CommonJS export to allow build-languages script to require it
+module.exports = { languages };
