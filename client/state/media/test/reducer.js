@@ -54,6 +54,7 @@ describe( 'reducer', () => {
 			'queryRequests',
 			'mediaItemRequests',
 			'selectedItems',
+			'transientItems',
 		] );
 	} );
 
