@@ -113,7 +113,7 @@
 		"classnames": "^2.2.6",
 		"lodash": "*",
 		"moment": "*",
-		"newspack-blocks": "github:Automattic/newspack-blocks#v1.7.0"
+		"newspack-blocks": "github:Automattic/newspack-blocks#v1.7.1"
 	},
 	"devDependencies": {
 		"@wordpress/eslint-plugin": "^6.0.0"
