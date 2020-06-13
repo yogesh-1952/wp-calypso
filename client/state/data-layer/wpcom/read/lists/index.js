@@ -27,8 +27,8 @@ registerHandlers( 'state/data-layer/wpcom/read/lists/index.js', {
 					action
 				),
 			onSuccess: ( action, response ) => [
-				receiveReaderList( { list: response.list } ),
-				navigate( `/read/list/${ response.list.owner }/${ response.list.slug }/edit` ),
+				receiveReaderList( { list: response } ),
+				navigate( `/read/list/${ response.owner }/${ response.slug }/edit` ),
 			],
 			onError: ( action, error ) => [
 				errorNotice( String( error ) ),
