@@ -13,6 +13,7 @@ import {
 	getListByOwnerAndSlug,
 	getListItems,
 	isCreatingList as isCreatingListSelector,
+	isMissingByOwnerAndSlug,
 } from 'state/reader/lists/selectors';
 import FormattedHeader from 'components/formatted-header';
 import FormButtonsBar from 'components/forms/form-buttons-bar';
@@ -35,6 +36,7 @@ import { createReaderList } from 'state/reader/lists/actions';
 import ReaderExportButton from 'blocks/reader-export-button';
 import { READER_EXPORT_TYPE_LIST } from 'blocks/reader-export-button/constants';
 import ListItem from './list-item';
+import Missing from 'reader/list-stream/missing';
 
 /**
  * Style dependencies
@@ -131,14 +133,15 @@ function ListForm( { isCreateForm, isSubmissionDisabled, list, onChange, onSubmi
 }
 
 function Details( { list } ) {
+	const translate = useTranslate();
 	return (
 		<>
 			<ListForm list={ list } />
 
 			<Card>
-				<FormSectionHeading>DANGER!!</FormSectionHeading>
+				<FormSectionHeading>{ translate( 'DANGER!!' ) }</FormSectionHeading>
 				<Button scary primary>
-					DELETE LIST FOREVER
+					{ translate( 'DELETE LIST FOREVER' ) }
 				</Button>
 			</Card>
 		</>
@@ -146,8 +149,9 @@ function Details( { list } ) {
 }
 
 function Items( { list, listItems, owner } ) {
+	const translate = useTranslate();
 	if ( ! listItems ) {
-		return <Card>Loading...</Card>;
+		return <Card>{ translate( 'Loading…' ) }</Card>;
 	}
 	return listItems.map( ( item ) => (
 		<ListItem key={ item.ID } owner={ owner } list={ list } item={ item } />
@@ -155,14 +159,14 @@ function Items( { list, listItems, owner } ) {
 }
 
 function Export( { list, listItems } ) {
+	const translate = useTranslate();
 	return (
 		<Card>
 			<p>You can export this list to use on other services. The file will be in OPML format.</p>
-			<ReaderExportButton
-				exportType={ READER_EXPORT_TYPE_LIST }
-				listId={ list.ID }
-				disabled={ ! listItems || listItems.length === 0 }
-			/>
+			{ ! listItems && <span>{ translate( 'Loading…' ) }</span> }
+			{ listItems && (
+				<ReaderExportButton exportType={ READER_EXPORT_TYPE_LIST } listId={ list.ID } />
+			) }
 		</Card>
 	);
 }
@@ -202,6 +206,9 @@ function ReaderListEdit( props ) {
 	const { selectedSection } = props;
 	const translate = useTranslate();
 	const list = useSelector( ( state ) => getListByOwnerAndSlug( state, props.owner, props.slug ) );
+	const isMissing = useSelector( ( state ) =>
+		isMissingByOwnerAndSlug( state, props.owner, props.slug )
+	);
 	const listItems = useSelector( ( state ) =>
 		list ? getListItems( state, list.ID ) : undefined
 	);
@@ -217,7 +224,8 @@ function ReaderListEdit( props ) {
 						args: { listName: list?.title || props.slug },
 					} ) }
 				/>
-				{ ! list && <Card>Loading...</Card> }
+				{ ! list && ! isMissing && <Card>{ translate( 'Loading…' ) }</Card> }
+				{ isMissing && <Missing /> }
 				{ list && (
 					<>
 						<SectionNav>
