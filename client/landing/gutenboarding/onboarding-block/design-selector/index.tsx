@@ -20,6 +20,7 @@ import designs, { getDesignImageUrl } from '../../available-designs';
 import JetpackLogo from 'components/jetpack-logo'; // @TODO: extract to @automattic package
 import type { Design } from '../../stores/onboard/types';
 import ActionButtons, { BackButton } from '../../components/action-buttons';
+import { isEnabled } from '../../../../config';
 
 /**
  * Style dependencies
@@ -70,12 +71,15 @@ const DesignSelector: React.FunctionComponent = () => {
 							} }
 						>
 							<span className="design-selector__image-frame">
-								<MshotsImage src={ getDesignImageUrl( design ) } alt="" />
-								{ /* <img
-									alt=""
-									aria-labelledby={ makeOptionId( design ) }
-									src={ getDesignImageUrl( design ) }
-								/> */ }
+								{ isEnabled( 'gutenboarding/mshot-preview' ) ? (
+									<MshotsImage src={ getDesignImageUrl( design ) } alt="" />
+								) : (
+									<img
+										alt=""
+										aria-labelledby={ makeOptionId( design ) }
+										src={ getDesignImageUrl( design ) }
+									/>
+								) }
 							</span>
 							<span className="design-selector__option-overlay">
 								<span id={ makeOptionId( design ) } className="design-selector__option-meta">

@@ -22,9 +22,9 @@ export const getDesignImageUrl = ( design: Design ) => {
 	// https://github.com/Automattic/mShots/issues/16
 	// https://github.com/Automattic/wp-calypso/issues/40564
 
-	// if ( ! isEnabled( 'gutenboarding/mshot-preview' ) ) {
-	// 	return `/calypso/page-templates/design-screenshots/${ design.slug }_${ design.template }_${ design.theme }.jpg`;
-	// }
+	if ( ! isEnabled( 'gutenboarding/mshot-preview' ) ) {
+		return `/calypso/page-templates/design-screenshots/${ design.slug }_${ design.template }_${ design.theme }.jpg`;
+	}
 
 	const mshotsUrl = 'https://s0.wp.com/mshots/v1/';
 	const designsEndpoint = 'https://public-api.wordpress.com/rest/v1/template/demo/';
