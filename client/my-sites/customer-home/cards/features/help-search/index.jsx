@@ -5,26 +5,34 @@ import { Card } from '@automattic/components';
 import React, { useEffect } from 'react';
 import { useTranslate } from 'i18n-calypso';
 import { connect } from 'react-redux';
-import { get } from 'lodash';
+import { get, isUndefined, omitBy } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import CardHeading from 'components/card-heading';
 import Gridicon from 'components/gridicon';
-
+import { recordTracksEvent } from 'state/analytics/actions';
 import getSearchQuery from 'state/inline-help/selectors/get-search-query';
 import { hideInlineHelp, showInlineHelp } from 'state/inline-help/actions';
 import { openSupportArticleDialog } from 'state/inline-support-article/actions';
 import HelpSearchCard from 'blocks/inline-help/inline-help-search-card';
 import HelpSearchResults from 'blocks/inline-help/inline-help-search-results';
 import getInlineHelpCurrentlySelectedResult from 'state/inline-help/selectors/get-inline-help-currently-selected-result';
-import { RESULT_POST_ID, RESULT_LINK } from 'blocks/inline-help/constants';
+import {
+	RESULT_POST_ID,
+	RESULT_ARTICLE,
+	RESULT_LINK,
+	RESULT_TOUR,
+	RESULT_TYPE,
+} from 'blocks/inline-help/constants';
 
 /**
  * Style dependencies
  */
 import './style.scss';
+
+const HELP_COMPONENT_LOCATION = 'customer-home';
 
 const amendYouTubeLink = ( link = '' ) =>
 	link.replace( 'youtube.com/embed/', 'youtube.com/watch?v=' );
@@ -35,6 +43,8 @@ const HelpSearch = ( {
 	showInlineHelpUI,
 	selectedResult,
 	openDialog,
+	tour,
+	track,
 } ) => {
 	const translate = useTranslate();
 
@@ -59,6 +69,15 @@ const HelpSearch = ( {
 		const resultPostId = get( selectedResult, RESULT_POST_ID );
 		const resultLink = amendYouTubeLink( get( selectedResult, RESULT_LINK ) );
 
+		track( 'calypso_inlinehelp_forums_open', omitBy( {
+				search_query: searchQuery,
+				tour,
+				result_url: resultLink,
+				location: HELP_COMPONENT_LOCATION,
+			},
+			isUndefined
+		) );
+
 		openDialog( { postId: resultPostId, actionUrl: resultLink } );
 	};
 
@@ -72,7 +91,7 @@ const HelpSearch = ( {
 							<HelpSearchCard
 								onSelect={ openResultView }
 								query={ searchQuery }
-								location="customer-home"
+								location={ HELP_COMPONENT_LOCATION }
 								placeholder={ translate( 'Search support articles' ) }
 							/>
 							<HelpSearchResults
@@ -97,15 +116,19 @@ const HelpSearch = ( {
 	);
 };
 
-const mapStateToProps = ( state ) => ( {
+const mapStateToProps = ( state, { result } ) => ( {
 	searchQuery: getSearchQuery( state ),
 	selectedResult: getInlineHelpCurrentlySelectedResult( state ),
+	type: get( result, RESULT_TYPE, RESULT_ARTICLE ),
+	tour: get( result, RESULT_TOUR ),
+	link: amendYouTubeLink( get( result, RESULT_LINK ) ),
 } );
 
 const mapDispatchToProps = {
 	hideInlineHelpUI: hideInlineHelp,
 	showInlineHelpUI: showInlineHelp,
 	openDialog: openSupportArticleDialog,
+	track: recordTracksEvent,
 };
 
 export default connect( mapStateToProps, mapDispatchToProps )( HelpSearch );
