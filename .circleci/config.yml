@@ -822,41 +822,32 @@ jobs:
     environment:
       VERSION: << pipeline.git.tag >>
     steps:
-      - when:
-          condition: << pipeline.git.tag >>
-          steps:
-            - checkout
-            - attach_workspace:
-                at: /home/circleci/wp-calypso
-            - run:
-                name: Install Dependencies
-                command: go get github.com/tcnksm/ghr
-            - run:
-                name: Publish Github Release
-                command: |
-                  SHORT_VERSION=${VERSION#"desktop/"}
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/wp-calypso
+      - run:
+          name: Install Dependencies
+          command: go get github.com/tcnksm/ghr
+      - run:
+          name: Publish Github Release
+          command: |
+            SHORT_VERSION=${VERSION#"desktop/"}
 
-                  echo "Publishing draft release for wp-desktop v$SHORT_VERSION..."
+            echo "Publishing draft release for wp-desktop v$SHORT_VERSION..."
 
-                  NAME="WP-Desktop $SHORT_VERSION"
+            NAME="WP-Desktop $SHORT_VERSION"
 
-                  ghr \
-                    --token $GH_TOKEN \
-                    --username $CIRCLE_PROJECT_USERNAME \
-                    --repository $CIRCLE_PROJECT_REPONAME \
-                    --commitish $CIRCLE_SHA1 \
-                    --name $NAME \
-                    --delete \
-                    --draft \
-                    $VERSION desktop/release/
+            ghr \
+              --token $GH_TOKEN \
+              --username $CIRCLE_PROJECT_USERNAME \
+              --repository $CIRCLE_PROJECT_REPONAME \
+              --commitish $CIRCLE_SHA1 \
+              --name $NAME \
+              --delete \
+              --draft \
+              $VERSION desktop/release/
 
-                  echo "Publish complete"
-      - unless:
-          condition: << pipeline.git.tag >>
-          steps:
-            - run:
-                name: Skip Publish
-                command: echo "Not on a tag, skipping publish"
+            echo "Publish complete"
 
 workflows:
   version: 2
