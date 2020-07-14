@@ -9,8 +9,9 @@ const NOTARIZATION_PWD = process.env.WPDESKTOP_NOTARIZATION_PWD;
 const NOTARIZATION_ASC_PROVIDER = process.env.APPLE_DEVELOPER_SHORT_NAME;
 
 const circleTag = process.env.CIRCLE_TAG;
-const shouldNotarize =
-	process.platform === 'darwin' && !! circleTag && circleTag.startsWith( 'desktop' );
+// const shouldNotarize =
+	// process.platform === 'darwin' && !! circleTag && circleTag.startsWith( 'desktop' );
+const shouldNotarize = false;
 
 function elapsed( start ) {
 	const now = new Date();
