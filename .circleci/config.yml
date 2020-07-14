@@ -952,6 +952,7 @@ workflows:
           filters:
             tags:
               only: /.*/
+
   wp-desktop-release:
     jobs:
       - wp-desktop-source:
