@@ -818,12 +818,12 @@ jobs:
   wp-desktop-publish:
     docker:
       - image: circleci/golang:1.12
-    working_directory: /home/circleci/wp-calypso
+    working_directory: /home/circleci/desktop
     environment:
       VERSION: << pipeline.git.tag >>
     steps:
       - attach_workspace:
-          at: /home/circleci/wp-calypso
+          at: /home/circleci/desktop
       - run:
           name: Install Dependencies
           command: go get github.com/tcnksm/ghr
@@ -844,7 +844,7 @@ jobs:
               --name $NAME \
               --delete \
               --draft \
-              $VERSION desktop/release/
+              $VERSION release/
 
             echo "Publish complete"
 
