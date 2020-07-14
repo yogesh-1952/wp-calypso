@@ -942,7 +942,6 @@ workflows:
           requires:
             - wp-desktop-source
   wp-desktop-release:
-    when: << pipeline.git.tag >>
     jobs:
       - wp-desktop-source:
         filters:
