@@ -930,16 +930,28 @@ workflows:
 #           slack-webhook: '$SLACK_WOO'
   wp-desktop:
     jobs:
-      - wp-desktop-source
+      - wp-desktop-source:
+          filters:
+            tags:
+              only: /.*/
       - wp-desktop-mac:
           requires:
             - wp-desktop-source
+          filters:
+            tags:
+              only: /.*/
       - wp-desktop-linux:
           requires:
             - wp-desktop-source
+          filters:
+            tags:
+              only: /.*/
       - wp-desktop-windows:
           requires:
             - wp-desktop-source
+          filters:
+            tags:
+              only: /.*/
   wp-desktop-release:
     jobs:
       - wp-desktop-source:
