@@ -973,7 +973,7 @@ workflows:
             - wp-desktop-windows
           filters:
             tags:
-              only: /desktop\/.*/
+              only: /.*/
 
   calypso-nightly:
     jobs:
