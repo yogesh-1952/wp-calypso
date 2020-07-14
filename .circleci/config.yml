@@ -843,15 +843,15 @@ jobs:
             NAME="WP-Desktop $SHORT_VERSION"
 
             ghr \
-              --token $GH_TOKEN \
-              --username $CIRCLE_PROJECT_USERNAME \
-              --repository $CIRCLE_PROJECT_REPONAME \
-              --commitish $CIRCLE_SHA1 \
-              --name $NAME \
-              --body "" \
-              --delete \
-              --draft \
-              $VERSION release/
+             --token $GH_TOKEN \
+             --username $CIRCLE_PROJECT_USERNAME \
+             --repository $CIRCLE_PROJECT_REPONAME \
+             --commitish $CIRCLE_SHA1 \
+             --name $NAME \
+             --body "" \
+             --delete \
+             --draft \
+             $VERSION release/
 
             echo "Publish complete"
 
