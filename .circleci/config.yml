@@ -848,6 +848,7 @@ jobs:
               --repository $CIRCLE_PROJECT_REPONAME \
               --commitish $CIRCLE_SHA1 \
               --name $NAME \
+              --body "" \
               --delete \
               --draft \
               $VERSION release/
