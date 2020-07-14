@@ -947,25 +947,25 @@ workflows:
       - wp-desktop-source:
         filters:
           tags:
-            only: /desktop\/.*/
+            only: /.*/
       - wp-desktop-mac:
           requires:
             - wp-desktop-source
           filters:
             tags:
-              only: /desktop\/.*/
+              only: /.*/
       - wp-desktop-linux:
           requires:
             - wp-desktop-source
           filters:
             tags:
-              only: /desktop\/.*/
+              only: /.*/
       - wp-desktop-windows:
           requires:
             - wp-desktop-source
           filters:
             tags:
-              only: /desktop\/.*/
+              only: /.*/
       - wp-desktop-publish:
           requires:
             - wp-desktop-mac
