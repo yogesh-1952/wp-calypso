@@ -929,37 +929,36 @@ workflows:
 #           test-target: 'WOO'
 #           slack-webhook: '$SLACK_WOO'
   wp-desktop:
-    unless: << pipeline.git.tag >>
     jobs:
       - wp-desktop-source:
           filters:
             tags:
-              only: /desktop\/.*
+              only: /desktop\/.*/
       - wp-desktop-mac:
           requires:
             - wp-desktop-source
           filters:
             tags:
-              only: /desktop\/.*
+              only: /desktop\/.*/
       - wp-desktop-linux:
           requires:
             - wp-desktop-source
           filters:
             tags:
-              only: /desktop\/.*
+              only: /desktop\/.*/
       - wp-desktop-windows:
           requires:
             - wp-desktop-source
           filters:
             tags:
-              only: /desktop\/.*
+              only: /desktop\/.*/
   wp-desktop-release:
     when: << pipeline.git.tag >>
     jobs:
       - wp-desktop-source:
         filters:
           tags:
-            only: /desktop\/.*
+            only: /desktop\/.*/
       - wp-desktop-publish:
           requires:
             - wp-desktop-mac
@@ -967,7 +966,7 @@ workflows:
             - wp-desktop-windows
           filters:
             tags:
-              only: /desktop\/.*
+              only: /desktop\/.*/
 
   calypso-nightly:
     jobs:
