@@ -822,7 +822,6 @@ jobs:
     environment:
       VERSION: << pipeline.git.tag >>
     steps:
-      - checkout
       - attach_workspace:
           at: /home/circleci/wp-calypso
       - run:
