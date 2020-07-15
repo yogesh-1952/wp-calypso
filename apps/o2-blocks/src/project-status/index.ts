@@ -22,8 +22,20 @@ export function registerBlock() {
 			anchor: true,
 		},
 		attributes: {
+			allTasks: {
+				type: 'number',
+				default: 0,
+			},
+			completedTasks: {
+				type: 'number',
+				default: 0,
+			},
 			estimate: {
 				type: 'string',
+			},
+			pendingTasks: {
+				type: 'number',
+				default: 0,
 			},
 			team: {
 				type: 'string',
