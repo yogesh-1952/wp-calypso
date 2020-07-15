@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
+import { BlockDeprecation, registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -11,8 +11,28 @@ import edit from './editor';
 import save from './save';
 import icon from './icon';
 
+import type { BlockAttributesV1, BlockAttributes } from './types';
+
+const v1deprecation: BlockDeprecation< BlockAttributesV1 > = {
+	attributes: {
+		estimate: { type: 'string' },
+		team: { type: 'string', default: '' },
+	},
+	migrate( attributes: object ) {
+		return {
+			allTasks: 0,
+			completedTasks: 0,
+			pendingTasks: 0,
+			...attributes,
+		};
+	},
+	save() {
+		return null;
+	},
+};
+
 export function registerBlock() {
-	registerBlockType( 'a8c/project-status', {
+	registerBlockType< BlockAttributes >( 'a8c/project-status', {
 		title: __( 'Project status' ),
 		description: __( 'Display a task overview of the status of a project.' ),
 		icon,
@@ -21,6 +41,7 @@ export function registerBlock() {
 			className: false,
 			anchor: true,
 		},
+		deprecated: [ v1deprecation ],
 		attributes: {
 			allTasks: {
 				type: 'number',
