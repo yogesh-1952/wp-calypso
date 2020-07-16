@@ -28,6 +28,12 @@ const babelConfig = {
 			plugins: [ 'add-module-exports', 'babel-plugin-dynamic-import-node' ],
 		},
 	},
+	overrides: [
+		{
+			test: [ './apps/o2-blocks/src' ],
+			plugins: [ '@wordpress/import-jsx-pragma', '@babel/transform-react-jsx' ],
+		},
+	],
 };
 
 module.exports = babelConfig;
