@@ -167,4 +167,13 @@ export default {
 		allowExistingUsers: true,
 		localeTargets: 'any',
 	},
+	verticalsOnGutenboarding: {
+		datestamp: '20200720',
+		variations: {
+			verticals: 50,
+			noverticals: 50,
+		},
+		defaultVariation: 'noverticals',
+		allowExistingUsers: true,
+	},
 };
