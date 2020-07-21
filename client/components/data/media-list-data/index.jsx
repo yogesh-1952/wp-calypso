@@ -15,10 +15,10 @@ import MediaListStore from 'lib/media/list-store';
 import passToChildren from 'lib/react-pass-to-children';
 import utils from './utils';
 import { fetchNextMediaPage } from 'state/media/thunks';
+import getMediaSortedByDate from 'state/selectors/get-media-sorted-by-date';
 
 function getStateData( siteId ) {
 	return {
-		media: MediaListStore.getAll( siteId ),
 		mediaHasNextPage: MediaListStore.hasNextPage( siteId ),
 		mediaFetchingNextPage: MediaListStore.isFetchingNextPage( siteId ),
 	};
@@ -100,10 +100,15 @@ export class MediaListData extends React.Component {
 		return passToChildren(
 			this,
 			assign( {}, this.state, {
+				media: this.props.media,
 				mediaOnFetchNextPage: this.fetchData,
 			} )
 		);
 	}
 }
 
-export default connect( null, { fetchNextMediaPage } )( MediaListData );
+const mapStateToProps = ( state, ownProps ) => ( {
+	media: getMediaSortedByDate( state, ownProps.siteId ),
+} );
+
+export default connect( mapStateToProps, { fetchNextMediaPage } )( MediaListData );
