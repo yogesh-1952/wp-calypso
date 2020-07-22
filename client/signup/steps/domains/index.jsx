@@ -655,10 +655,21 @@ class DomainsStep extends React.Component {
 			backLabelText = translate( 'Back to My Sites' );
 		}
 
-		// Use a generic back action when landing directly on domain.
-		if ( 'domain' === flowName ) {
-			backUrl = 'javascript:history.back()';
+		// Override Back link if source parameter is found below
+		const backUrlSourceOverrides = {
+			'business-name-generator': '/business-name-generator',
+			'domains': '/domains'
+		};
+		const source = get( this.props, 'queryObject.source' );
+
+		let isExternalBackUrl;
+
+		if ( backUrlSourceOverrides[ source ] ) {
+			backUrl = backUrlSourceOverrides[ source ];
 			backLabelText = translate( 'Back' );
+
+			// Solves route conflicts between LP and calypso (ex. /domains).
+			isExternalBackUrl = true;
 		}
 
 		const headerText = this.getHeaderText();
@@ -670,6 +681,7 @@ class DomainsStep extends React.Component {
 				flowName={ this.props.flowName }
 				stepName={ this.props.stepName }
 				backUrl={ backUrl }
+				externalBackUrl={ isExternalBackUrl }
 				positionInFlow={ this.props.positionInFlow }
 				headerText={ headerText }
 				subHeaderText={ fallbackSubHeaderText }

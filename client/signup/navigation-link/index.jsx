@@ -37,6 +37,7 @@ export class NavigationLink extends Component {
 		stepName: PropTypes.string.isRequired,
 		// Allows to force a back button in the first step for example.
 		allowBackFirstStep: PropTypes.bool,
+		rel: PropTypes.string
 	};
 
 	static defaultProps = {
@@ -152,6 +153,7 @@ export class NavigationLink extends Component {
 				className={ buttonClasses }
 				href={ this.getBackUrl() }
 				onClick={ this.handleClick }
+				rel={ this.props.rel }
 			>
 				{ backGridicon }
 				{ text }
