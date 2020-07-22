@@ -250,10 +250,10 @@ export function generateFlows( {
 
 	if ( isEnabled( 'signup/wpforteams' ) ) {
 		flows[ 'wp-for-teams' ] = {
-			steps: [ 'p2-site', 'p2-login-signup', 'user' ],
+			steps: [ 'p2-site', 'p2-details', 'user' ],
 			destination: ( dependencies ) => `https://${ dependencies.siteSlug }`,
 			description: 'P2 signup flow',
-			lastModified: '2020-06-04',
+			lastModified: '2020-07-22',
 		};
 
 		// Original name for the project was "WP for Teams". Since then, we've renamed it to "P2".
