@@ -61,9 +61,6 @@ $feature-upsell-break-at: '1040px';
 	margin-bottom: 15px;
 	text-align: center;
 
-	@include breakpoint-deprecated( '<1280px' ) {
-		font-size: $font-title-large;
-	}
 
 	@include breakpoint-deprecated( '<660px' ) {
 		font-size: $font-title-medium;
