@@ -600,7 +600,8 @@ export function prepareGSuiteContactValidationRequest(
 		contact_information: {
 			firstName: details.firstName?.value ?? '',
 			lastName: details.lastName?.value ?? '',
-			alternateEmail: details.alternateEmail?.value ?? '',
+			...( details.email?.value && { email: details.email?.value } ),
+			...( details.alternateEmail?.value && { email: details.alternateEmail?.value } ),
 			postalCode: details.postalCode?.value ?? '',
 			countryCode: details.countryCode?.value ?? '',
 		},
