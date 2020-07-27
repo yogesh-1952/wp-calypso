@@ -239,11 +239,12 @@ function ContactFormSummary( { isDomainFieldsVisible, isGSuiteInCart } ) {
 						<SummaryLine>{ contactInfo.email.value }</SummaryLine>
 					) }
 
-					<AlternateEmailSummary
-						contactInfo={ contactInfo }
-						showDomainContactSummary={ showDomainContactSummary }
-						isGSuiteInCart={ isGSuiteInCart }
-					/>
+					{ isGSuiteInCart && (
+						<AlternateEmailSummary
+							contactInfo={ contactInfo }
+							showDomainContactSummary={ showDomainContactSummary }
+						/>
+					) }
 
 					{ showDomainContactSummary && contactInfo.phone.value?.length > 0 && (
 						<SummaryLine>{ contactInfo.phone.value }</SummaryLine>
@@ -356,10 +357,7 @@ function RenderContactDetails( {
 	);
 }
 
-function AlternateEmailSummary( { contactInfo, showDomainContactSummary, isGSuiteInCart } ) {
-	if ( ! isGSuiteInCart && ! showDomainContactSummary ) {
-		return null;
-	}
+function AlternateEmailSummary( { contactInfo, showDomainContactSummary } ) {
 	if ( ! contactInfo.alternateEmail.value?.length ) {
 		return null;
 	}
