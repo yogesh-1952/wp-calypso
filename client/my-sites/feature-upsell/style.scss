@@ -37,7 +37,7 @@ $feature-upsell-break-at: '1040px';
 }
 
 .feature-upsell__header-title {
-	font-size: 36px;
+	font-size: $font-headline-small;
 	line-height: 1.1;
 	font-weight: 400;
 	margin-top: 40px;
@@ -202,7 +202,7 @@ $feature-upsell-break-at: '1040px';
 	margin-bottom: 20px;
 
 	&-header.is-capital {
-		font-size: 36px;
+		font-size: $font-headline-small;
 		line-height: 1.1;
 		font-weight: 400;
 		margin-bottom: 20px;
