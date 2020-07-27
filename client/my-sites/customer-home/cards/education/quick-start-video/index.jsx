@@ -30,8 +30,8 @@ export const QuickStartVideo = () => {
 			<Card>
 				<div>
 					<InlineSupportLink
-						supportPostId={ 4454 }
-						supportLink={ localizeUrl( 'https://wordpress.com/support/stats/' ) }
+						supportPostId={ 81083 }
+						supportLink={ localizeUrl( 'https://wordpress.com/support/start/' ) }
 						showIcon={ false }
 						showText={ false }
 						showHero={ true }
