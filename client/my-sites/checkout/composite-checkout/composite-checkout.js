@@ -69,6 +69,7 @@ import createAnalyticsEventHandler from './record-analytics';
 import { fillInSingleCartItemAttributes } from 'lib/cart-values';
 import {
 	hasGoogleApps,
+	needsExplicitAlternateEmailForGSuite,
 	hasDomainRegistration,
 	hasTransferProduct,
 	hasRenewalItem,
@@ -399,6 +400,9 @@ export default function CompositeCheckout( {
 			hasGoogleApps( responseCart ) &&
 			! hasDomainRegistration( responseCart ) &&
 			! hasTransferProduct( responseCart );
+		const needsAlternateEmailForGSuite =
+			needsOnlyGoogleAppsDetails &&
+			needsExplicitAlternateEmailForGSuite( responseCart, contactDetails );
 		const getIsFieldDisabled = () => isDisabled;
 		const tlds = getAllTopLevelTlds( domainNames );
 
@@ -406,6 +410,7 @@ export default function CompositeCheckout( {
 			<React.Fragment>
 				<ManagedContactDetailsFormFields
 					needsOnlyGoogleAppsDetails={ needsOnlyGoogleAppsDetails }
+					needsAlternateEmailForGSuite={ needsAlternateEmailForGSuite }
 					contactDetails={ contactDetails }
 					contactDetailsErrors={
 						shouldShowContactDetailsValidationErrors ? contactDetailsErrors : {}
