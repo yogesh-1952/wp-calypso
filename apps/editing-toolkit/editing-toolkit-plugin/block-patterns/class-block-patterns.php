@@ -26,7 +26,7 @@ class Block_Patterns {
 	 * Block_Patterns constructor.
 	 */
 	private function __construct() {
-		// $this->register_patterns();
+		$this->register_patterns();
 	}
 
 	/**
