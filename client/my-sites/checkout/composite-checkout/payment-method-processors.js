@@ -14,7 +14,6 @@ import {
 	submitApplePayPayment,
 	submitStripeCardTransaction,
 	submitEbanxCardTransaction,
-	submitDlocalCardTransaction,
 	submitStripeRedirectTransaction,
 	submitFreePurchaseTransaction,
 	submitCreditsTransaction,
@@ -144,11 +143,6 @@ export async function ebanxCardProcessor( submitData ) {
 	return pending;
 }
 
-export async function dlocalCardProcessor( submitData ) {
-	// TODO
-	throw new Error( 'dlocalCardProcessor not implemented', submitData, submitDlocalCardTransaction );
-}
-
 export async function multiPartnerCardProcessor( submitData ) {
 	const paymentPartner = submitData.paymentPartner;
 
@@ -158,10 +152,6 @@ export async function multiPartnerCardProcessor( submitData ) {
 
 	if ( paymentPartner === 'ebanx' ) {
 		return ebanxCardProcessor( submitData );
-	}
-
-	if ( paymentPartner === 'dlocal' ) {
-		return dlocalCardProcessor( submitData );
 	}
 
 	throw new RangeError( 'Unrecognized card payment partner: "' + paymentPartner + '"' );
