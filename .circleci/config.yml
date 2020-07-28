@@ -392,15 +392,15 @@ jobs:
           command: |
             cd apps/wpcom-block-editor/ && yarn build --output-path=$CIRCLE_ARTIFACTS/wpcom-block-editor
       - store-artifacts-and-test-results
-  test-full-site-editing:
+  test-editing-toolkit:
     <<: *defaults
     parallelism: 1
     steps:
       - prepare
       - run:
-          name: Run Full Site Editing client tests
+          name: Run editing-toolkit plugin client tests
           command: |
-            cd apps/full-site-editing && yarn run test:js
+            cd apps/editing-toolkit && yarn run test:js
   test-client:
     <<: *defaults
     parallelism: 6
@@ -859,7 +859,7 @@ workflows:
           filters:
             branches:
               ignore: master
-      - test-full-site-editing:
+      - test-editing-toolkit:
           requires:
             - setup
       - build-notifications:

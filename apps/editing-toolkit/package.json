@@ -1,12 +1,12 @@
 {
-	"name": "@automattic/full-site-editing",
+	"name": "@automattic/editing-toolkit",
 	"version": "1.14.0",
 	"description": "Plugin for full site editing with the block editor.",
 	"sideEffects": true,
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/Automattic/wp-calypso.git",
-		"directory": "apps/full-site-editing"
+		"directory": "apps/editing-toolkit"
 	},
 	"private": true,
 	"author": "Automattic Inc.",
@@ -80,8 +80,8 @@
 		"test:js:update-snapshots": "check-npm-client && npx wp-scripts test-unit-js -u --config='bin/js-unit-config.js' --colors",
 		"test:e2e": "check-npm-client && npx wp-scripts test-e2e --wordpress-base-url='http://localhost:4013' --colors",
 		"test:e2e:watch": "check-npm-client && npm run test-e2e -- --watch",
-		"test:php": "check-npm-client && npx wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/full-site-editing-plugin/phpunit.xml.dist'",
-		"clean": "check-npm-client && npx rimraf dist full-site-editing-plugin/*/dist",
+		"test:php": "check-npm-client && npx wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/editing-toolkit-plugin/phpunit.xml.dist'",
+		"clean": "check-npm-client && npx rimraf dist editing-toolkit-plugin/*/dist",
 		"prebuild": "check-npm-client && yarn run clean",
 		"predev": "check-npm-client && yarn run clean",
 		"sync:newspack-blocks": "check-npm-client && ./bin/sync-newspack-blocks.sh",

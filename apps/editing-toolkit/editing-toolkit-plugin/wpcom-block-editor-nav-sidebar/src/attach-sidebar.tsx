@@ -15,7 +15,7 @@ import ToggleSidebarButton from './components/toggle-sidebar-button';
 const registerPlugin = ( name: string, settings: Omit< PluginSettings, 'icon' > ) =>
 	originalRegisterPlugin( name, settings as any );
 
-registerPlugin( 'a8c-full-site-editing-nav-sidebar', {
+registerPlugin( 'a8c-editing-toolkit-nav-sidebar', {
 	render: function NavSidebar() {
 		const { addEntities } = useDispatch( 'core' );
 

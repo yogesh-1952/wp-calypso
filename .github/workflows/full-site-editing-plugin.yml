@@ -1,14 +1,14 @@
 on:
   pull_request:
-    # only trigger this workflow if FSE plugin files have been modified, or if packages have been updated.
+    # only trigger this workflow if editing toolkit plugin files have been modified, or if packages have been updated.
     paths:
-    - 'apps/full-site-editing/**'
+    - 'apps/editing-toolkit/**'
 
-name: FSE plugin
+name: Editing Toolkit Plugin
 
 jobs:
   build:
-    name: Build FSE plugin
+    name: Build Editing Toolkit Plugin
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -42,15 +42,15 @@ jobs:
       if: steps.cache.outputs.cache-hit == 'true'
       run: yarn run postinstall # Needed only when not running yarn install.
 
-    - name: Build FSE
+    - name: Build Editing Toolkit Plugin
       run: yarn build
-      working-directory: apps/full-site-editing
+      working-directory: apps/editing-toolkit
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v1
       with:
-        name: fse-build-archive
-        path: apps/full-site-editing/full-site-editing-plugin
+        name: editing-toolkit-build-archive
+        path: apps/editing-toolkit/editing-toolkit-plugin
 
   mc_upload:
     name: Create wpcom sync diff
@@ -67,8 +67,8 @@ jobs:
     - name: Get Build
       uses: actions/download-artifact@HEAD
       with:
-        name: fse-build-archive
-        path: apps/full-site-editing/full-site-editing-plugin
+        name: editing-toolkit-build-archive
+        path: apps/editing-toolkit/editing-toolkit-plugin
 
     - name: Send hook to Mission Control
       run: .github/workflows/send-calypso-app-build-trigger.sh
@@ -85,8 +85,8 @@ jobs:
     - name: Get build
       uses: actions/download-artifact@HEAD
       with:
-        name: fse-build-archive
-        path: apps/full-site-editing/full-site-editing-plugin
+        name: editing-toolkit-build-archive
+        path: apps/editing-toolkit/editing-toolkit-plugin
 
     - name: Run composer
       uses: nick-zh/composer-php@HEAD
@@ -109,16 +109,16 @@ jobs:
 
     - name: Setup wp-env dependencies
       run: |
-        echo '{ "plugins": [ "./dev-plugin", "./full-site-editing-plugin", "https://downloads.wordpress.org/plugin/gutenberg.latest-stable.zip" ], "themes": [] }' > .wp-env.override.json
-      working-directory: apps/full-site-editing
+        echo '{ "plugins": [ "./dev-plugin", "./editing-toolkit-plugin", "https://downloads.wordpress.org/plugin/gutenberg.latest-stable.zip" ], "themes": [] }' > .wp-env.override.json
+      working-directory: apps/editing-toolkit
 
     - name: Start wp-env
       run: npx wp-env start || npx wp-env start # Retry if failed.
-      working-directory: apps/full-site-editing
+      working-directory: apps/editing-toolkit
 
     - name: Run phpunit command
       run: yarn test:php
-      working-directory: apps/full-site-editing
+      working-directory: apps/editing-toolkit
 
   phpcs:
     name: Run phpcs
@@ -158,17 +158,17 @@ jobs:
     - name: Get build
       uses: actions/download-artifact@HEAD
       with:
-        name: fse-build-archive
-        path: apps/full-site-editing/full-site-editing-plugin
+        name: editing-toolkit-build-archive
+        path: apps/editing-toolkit/editing-toolkit-plugin
 
     - name: Check if newspack-blocks exists
-      run: test -f ./apps/full-site-editing/full-site-editing-plugin/newspack-blocks/synced-newspack-blocks/class-newspack-blocks.php
+      run: test -f ./apps/editing-toolkit/editing-toolkit-plugin/newspack-blocks/synced-newspack-blocks/class-newspack-blocks.php
 
     - name: Run composer
       uses: nick-zh/composer-php@HEAD
       with:
         action: 'install'
 
-    # This will fail if the textdomain has not been changed to full-site-editing, which indicates an issue with the sync or build scripts.
+    # This will fail if the textdomain has not been changed to editing-toolkit, which indicates an issue with the sync or build scripts.
     - name: Execute phpcs on newspack-blocks PHP files.
-      run: ./vendor/bin/phpcs --standard=apps/full-site-editing/bin/newspack-block-sync-phpcs.xml
+      run: ./vendor/bin/phpcs --standard=apps/editing-toolkit/bin/newspack-block-sync-phpcs.xml

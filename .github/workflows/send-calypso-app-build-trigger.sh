@@ -2,11 +2,11 @@
 set -Eeuo pipefail
 
 # cd here so that the parent directories are not included in the zip file.
-cd apps/full-site-editing/full-site-editing-plugin
+cd apps/editing-toolkit/editing-toolkit-plugin
 
 echo -e "Creating archive file...\n"
 
-# Create a zip of the FSE plugin. Should include built files at this point.
+# Create a zip of the editing-toolkit plugin. Should include built files at this point.
 build_archive=plugin-archive.zip
 zip --quiet --recurse-paths $build_archive ./*
 
