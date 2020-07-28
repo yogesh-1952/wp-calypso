@@ -27,7 +27,7 @@ function _manually_load_plugin() {
 	update_option(
 		'active_plugins',
 		array(
-			'editing-toolkit-plugin/editing-toolkit-plugin.php',
+			'editing-toolkit-plugin/full-site-editing-plugin.php',
 		)
 	);
 }
