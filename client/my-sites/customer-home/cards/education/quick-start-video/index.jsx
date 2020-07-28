@@ -10,8 +10,6 @@ import { Card } from '@automattic/components';
  */
 import InlineSupportLink from 'components/inline-support-link';
 import { localizeUrl } from 'lib/i18n-utils';
-// import isUnlaunchedSite from 'state/selectors/is-unlaunched-site';
-//import { getSelectedSiteId, getSelectedSiteSlug } from 'state/ui/selectors';
 
 /**
  * Style dependencies
@@ -37,9 +35,10 @@ export const QuickStartVideo = () => {
 						showHero={ true }
 						text="Welcome video"
 						heroImage={ quickStartVideoImage }
-						tracksEvent="calypso_customer_home_stats_support_page_view"
-						statsGroup="calypso_customer_home"
-						statsName="stats_learn_more"
+						tracksEvent="calypso_customer_home_card_impression"
+						tracksOptions="quick-start-video"
+						statsGroup="calypso_customer_home_card_impression'"
+						statsName="quick-start-video"
 					/>
 				</div>
 			</Card>
