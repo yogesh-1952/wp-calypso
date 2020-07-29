@@ -5,7 +5,7 @@
 import { find } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import i18n from 'i18n-calypso';
 
 /**
@@ -18,6 +18,8 @@ import { isEnabled } from 'config';
 import { isBusiness, isGoogleApps } from 'lib/products-values';
 import PurchaseDetail from 'components/purchase-detail';
 import isJetpackSectionEnabledForSite from 'state/selectors/is-jetpack-section-enabled-for-site';
+import QueryProductsList from 'components/data/query-products-list';
+import { getProductsList, getProductDisplayCost } from 'state/products-list/selectors';
 
 /**
  * Image dependencies
@@ -37,7 +39,8 @@ const BusinessPlanDetails = ( {
 	sitePlans,
 	selectedFeature,
 	purchases,
-	displayMode,
+	hasProductsList,
+	productDisplayCost
 } ) => {
 	const shouldPromoteJetpack = useSelector( ( state ) =>
 		isJetpackSectionEnabledForSite( state, selectedSite?.ID )
@@ -49,7 +52,7 @@ const BusinessPlanDetails = ( {
 	return (
 		<div>
 			{ googleAppsWasPurchased && <GoogleAppsDetails purchases={ purchases } /> }
-
+			{ ! hasProductsList && <QueryProductsList /> }
 			{ shouldPromoteJetpack && (
 				<PurchaseDetail
 					icon={ <img alt="" src={ jetpackBackupImage } /> }
@@ -72,11 +75,14 @@ const BusinessPlanDetails = ( {
 				icon={ <img alt="" src={ conciergeImage } /> }
 				title={ i18n.translate( 'Get personalized help' ) }
 				description={ i18n.translate(
-					'Schedule a Quick Start session with a Happiness Engineer to set up ' +
-						'your site and learn more about WordPress.com.'
+					'Schedule a %(price)s Quick Start session with a Happiness Engineer to set up your site and learn more about WordPress.com.', {
+						args: {
+							price: productDisplayCost
+						},
+					}
 				) }
-				buttonText={ i18n.translate( 'Schedule a session' ) }
-				href={ `/me/concierge/${ selectedSite.slug }/book` }
+				buttonText={ i18n.translate( 'Purchase a session' ) }
+				href={ `/checkout/offer-quickstart-session` }
 				onClick={ trackOnboardingButtonClick }
 			/>
 
@@ -124,5 +130,13 @@ BusinessPlanDetails.propTypes = {
 	selectedFeature: PropTypes.object,
 	sitePlans: PropTypes.object.isRequired,
 };
+export default connect(
+	( state ) => {
+		const productsList = getProductsList( state );
+		return {
+			hasProductsList: Object.keys( productsList ).length > 0,
+			productDisplayCost: getProductDisplayCost( state, 'concierge-session' ),
+		}
+	}
+)( BusinessPlanDetails );
 
-export default BusinessPlanDetails;
