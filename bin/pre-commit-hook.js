@@ -10,7 +10,7 @@ const path = require( 'path' );
 
 const phpcsPath = getPathForCommand( 'phpcs' );
 const phpcbfPath = getPathForCommand( 'phpcbf' );
-
+console.log( phpcbfPath );
 function quotedPath( pathToQuote ) {
 	if ( pathToQuote.includes( ' ' ) ) {
 		return `"${ pathToQuote }"`;
@@ -44,9 +44,9 @@ function getPathForCommand( command ) {
 	const composerBinDir = path.join( __dirname, '..', 'vendor', 'bin' );
 	let path_to_command;
 	try {
-		path_to_command = execSync( 'command -v ' + command, { encoding: 'utf8' } );
-	} catch ( e ) {
 		path_to_command = path.join( composerBinDir, command );
+	} catch ( e ) {
+		path_to_command = execSync( 'command -v ' + command, { encoding: 'utf8' } );
 	}
 	if ( typeof path_to_command === 'undefined' || ! path_to_command ) {
 		return false;
